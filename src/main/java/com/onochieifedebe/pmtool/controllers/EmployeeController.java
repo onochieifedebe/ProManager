@@ -9,19 +9,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.onochieifedebe.pmtool.dao.EmployeeRepository;
+
 import com.onochieifedebe.pmtool.entities.Employee;
+import com.onochieifedebe.pmtool.services.EmployeeService;
 
 @Controller
 @RequestMapping("/employees")
 public class EmployeeController {
 	
 	@Autowired
-	EmployeeRepository empRepo;
+	EmployeeService empService;
 	
 	@GetMapping
 	public String displayEmployees(Model model) {
-		List<Employee> employees = empRepo.findAll();
+		List<Employee> employees = empService.getAll();
 		model.addAttribute("employees",employees);
 		return "employees/listOfEmployees";
 	}
@@ -35,7 +36,7 @@ public class EmployeeController {
 	
 	@PostMapping("/save")
 	public String createEmployee(Employee employee, Model model) {
-		empRepo.save(employee);
+		empService.save(employee);
 		return "redirect:/employees/new";
 	}
 	

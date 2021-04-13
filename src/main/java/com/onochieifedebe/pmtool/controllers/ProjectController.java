@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-import com.onochieifedebe.pmtool.dao.EmployeeRepository;
-import com.onochieifedebe.pmtool.dao.ProjectRepository;
 import com.onochieifedebe.pmtool.entities.Employee;
 import com.onochieifedebe.pmtool.entities.Project;
+import com.onochieifedebe.pmtool.services.EmployeeService;
+import com.onochieifedebe.pmtool.services.ProjectService;
 
 
 @Controller
@@ -21,14 +21,14 @@ import com.onochieifedebe.pmtool.entities.Project;
 public class ProjectController {
 	
 	@Autowired
-	ProjectRepository proRepo;
+	ProjectService proService;
 	
 	@Autowired
-	EmployeeRepository empRepo;
+	EmployeeService empService;
 	
 	@GetMapping
 	public String displayProjects(Model model) {
-		List<Project> projects = proRepo.findAll();
+		List<Project> projects = proService.getAll();
 		model.addAttribute("projects",projects);
 		return "projects/listOfProjects";
 		
@@ -37,7 +37,7 @@ public class ProjectController {
 	@GetMapping("/new")
 	public String displayProjectForm(Model model) {
 		Project project = new Project();
-		List<Employee> employees = empRepo.findAll();
+		List<Employee> employees = empService.getAll();
 		
 		model.addAttribute("allemployees",employees);
 		model.addAttribute("project",project);		
@@ -46,7 +46,7 @@ public class ProjectController {
 	
 	@PostMapping("/save")
 	public String createProject(Project project, Model model) {
-		proRepo.save(project);
+		proService.save(project);
 		return "redirect:/projects";
 	}
 

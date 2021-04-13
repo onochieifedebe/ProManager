@@ -13,35 +13,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onochieifedebe.pmtool.dao.EmployeeRepository;
-import com.onochieifedebe.pmtool.dao.ProjectRepository;
 import com.onochieifedebe.pmtool.dto.ChartData;
 import com.onochieifedebe.pmtool.dto.EmployeeProject;
 //import com.onochieifedebe.pmtool.entities.Employee;
 import com.onochieifedebe.pmtool.entities.Project;
+import com.onochieifedebe.pmtool.services.EmployeeService;
+import com.onochieifedebe.pmtool.services.ProjectService;
 
 @Controller
 @RequestMapping
 public class HomeController {
 	
-	@Value("${version}")
-	private String version;
+//	@Value("${version}")
+//	private String version;
 	
 	@Autowired
-	ProjectRepository proRepo;
+	ProjectService proService;
 	
 	@Autowired
-	EmployeeRepository empRepo;
+	EmployeeService empService;
 	
 	@GetMapping("/")
 	public String home(Model model) throws JsonProcessingException {
 		
-		model.addAttribute("version",version);
+//		model.addAttribute("version",version);
 		
-		List<Project> projects = proRepo.findAll();
-		List<EmployeeProject> employeesProjectCount = empRepo.employeeProjects();
+		List<Project> projects = proService.getAll();
+		List<EmployeeProject> employeesProjectCount = empService.employeeProjects();
 		
-		List<ChartData> projectStatusList = proRepo.projectStatus();
+		List<ChartData> projectStatusList = proService.getprojectStatus();
 		ObjectMapper objectMapper = new ObjectMapper();              //Converting projectStatusList to JSON structure
 		String statusJsonString = objectMapper.writeValueAsString(projectStatusList);
 		
